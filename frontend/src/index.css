@@ -4,21 +4,24 @@
 
 /* 自定义滚动条 */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+    width: 6px;
+    height: 6px;
 }
+
 ::-webkit-scrollbar-track {
-  background: #1e293b;
+    background: #1e293b;
 }
+
 ::-webkit-scrollbar-thumb {
-  background: #475569;
-  border-radius: 3px;
+    background: #475569;
+    border-radius: 3px;
 }
+
 ::-webkit-scrollbar-thumb:hover {
-  background: #64748b;
+    background: #64748b;
 }
 
 /* 音频进度条样式 */
 input[type='range'] {
-  accent-color: #6366f1;
+    accent-color: #6366f1;
 }
