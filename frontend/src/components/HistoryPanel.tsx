@@ -4,6 +4,24 @@ import { getHistory, deleteHistoryItem, clearHistory } from '../api/client'
 import type { HistoryItem } from '../types'
 import AudioPlayer from './AudioPlayer'
 
+function formatBeijingTime(isoString: string): string {
+    // 后端历史时间可能是无时区的 ISO 字符串（SQLite 常见），需按 UTC 解释。
+    const hasTimezone = /([zZ]|[+-]\d{2}:\d{2})$/.test(isoString)
+    const normalized = hasTimezone ? isoString : `${isoString}Z`
+    const date = new Date(normalized)
+    if (Number.isNaN(date.getTime())) return isoString
+    return new Intl.DateTimeFormat('zh-CN', {
+        timeZone: 'Asia/Shanghai',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false,
+    }).format(date)
+}
+
 export default function HistoryPanel() {
     const [items, setItems] = useState<HistoryItem[]>([])
     const [loading, setLoading] = useState(true)
@@ -118,7 +136,7 @@ export default function HistoryPanel() {
                                             {item.mode === 'short_video' ? '🎬 短视频' : '普通'}
                                         </span>
                                         <span className="text-slate-500 text-xs">
-                                            {new Date(item.created_at).toLocaleString('zh-CN')}
+                                            {formatBeijingTime(item.created_at)}
                                         </span>
                                     </div>
                                     <p className="text-slate-400 text-sm mb-1 leading-relaxed">

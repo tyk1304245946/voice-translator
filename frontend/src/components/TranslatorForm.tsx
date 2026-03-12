@@ -62,8 +62,8 @@ export default function TranslatorForm({ onResults, onSuccess }: Props) {
                     <button
                         onClick={() => setMode('normal')}
                         className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${mode === 'normal'
-                                ? 'bg-indigo-600 text-white'
-                                : 'text-slate-400 hover:text-white'
+                            ? 'bg-indigo-600 text-white'
+                            : 'text-slate-400 hover:text-white'
                             }`}
                     >
                         普通翻译
@@ -71,8 +71,8 @@ export default function TranslatorForm({ onResults, onSuccess }: Props) {
                     <button
                         onClick={() => setMode('short_video')}
                         className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${mode === 'short_video'
-                                ? 'bg-indigo-600 text-white'
-                                : 'text-slate-400 hover:text-white'
+                            ? 'bg-indigo-600 text-white'
+                            : 'text-slate-400 hover:text-white'
                             }`}
                     >
                         🎬 短视频优化
