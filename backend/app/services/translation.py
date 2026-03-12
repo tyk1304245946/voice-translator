@@ -3,11 +3,17 @@ from app.config import settings
 
 _client: AsyncOpenAI | None = None
 
+ARK_BASE_URL = "https://ark.cn-beijing.volces.com/api/coding/v3"
+ARK_MODEL = "ark-code-latest"
+
 
 def get_client() -> AsyncOpenAI:
     global _client
     if _client is None:
-        _client = AsyncOpenAI(api_key=settings.openai_api_key)
+        _client = AsyncOpenAI(
+            api_key=settings.ark_api_key,
+            base_url=ARK_BASE_URL,
+        )
     return _client
 
 
@@ -36,7 +42,7 @@ async def translate_text(text: str, mode: str = "normal") -> str:
         SHORT_VIDEO_SYSTEM_PROMPT if mode == "short_video" else NORMAL_SYSTEM_PROMPT
     )
     response = await client.chat.completions.create(
-        model="gpt-4o-mini",
+        model=ARK_MODEL,
         messages=[
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": text},

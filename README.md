@@ -4,7 +4,7 @@
 
 ## 功能
 
-- **翻译**：中文 → 英文（OpenAI GPT-4o-mini）
+- **翻译**：中文 → 英文（火山方舟 ark-code-latest）
 - **语音**：英文文本转语音（ElevenLabs API），支持播放 & 下载
 - **短视频优化**：句子更短、更口语化，适合 Reels / TikTok 场景
 - **批量处理**：一次提交多条文案，逐条生成翻译和音频
@@ -25,7 +25,7 @@
 
 ```bash
 cp .env.example .env
-# 编辑 .env，填入你的 OPENAI_API_KEY 和 ELEVENLABS_API_KEY
+# 编辑 .env，填入你的 ARK_API_KEY 和 ELEVENLABS_API_KEY
 ```
 
 ### 2. Docker 启动（推荐）
@@ -59,7 +59,7 @@ npm run dev   # http://localhost:3000
 
 | 服务        | 注册地址                          | 免费额度                      |
 |-------------|-----------------------------------|-------------------------------|
-| OpenAI      | https://platform.openai.com       | 按量计费，gpt-4o-mini 极低价  |
+| 火山方舟    | https://www.volcengine.com/product/ark | 按平台计费策略执行 |
 | ElevenLabs  | https://elevenlabs.io             | 每月 10,000 字符免费           |
 
 ## ElevenLabs Voice ID
@@ -84,7 +84,7 @@ voice-translator/
 │   │   │   ├── tts.py
 │   │   │   └── history.py
 │   │   └── services/        # 业务逻辑
-│   │       ├── translation.py   # OpenAI 翻译
+│   │       ├── translation.py   # 火山方舟翻译
 │   │       └── elevenlabs_service.py  # ElevenLabs TTS
 │   ├── pyproject.toml
 │   └── Dockerfile
