@@ -32,6 +32,7 @@ class GenerateItem(BaseModel):
     original: str
     translated: str
     audio_url: str
+    download_name: str
 
 
 class GenerateResponse(BaseModel):
@@ -43,6 +44,7 @@ class HistoryItemSchema(BaseModel):
     original_text: str
     translated_text: str
     audio_filename: Optional[str] = None
+    download_name: Optional[str] = None
     mode: str
     created_at: datetime
 

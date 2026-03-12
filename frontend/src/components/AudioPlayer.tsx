@@ -3,6 +3,14 @@ import { Play, Pause, Download } from 'lucide-react'
 
 interface Props {
     src: string
+    downloadName?: string | null
+}
+
+function normalizeDownloadName(name?: string | null): string {
+    const fallback = '中文语音.mp3'
+    if (!name || !name.trim()) return fallback
+    const trimmed = name.trim()
+    return trimmed.endsWith('.mp3') ? trimmed : `${trimmed}.mp3`
 }
 
 function formatTime(s: number): string {
@@ -12,7 +20,7 @@ function formatTime(s: number): string {
     return `${m}:${sec.toString().padStart(2, '0')}`
 }
 
-export default function AudioPlayer({ src }: Props) {
+export default function AudioPlayer({ src, downloadName }: Props) {
     const audioRef = useRef<HTMLAudioElement>(null)
     const [isPlaying, setIsPlaying] = useState(false)
     const [currentTime, setCurrentTime] = useState(0)
@@ -44,7 +52,7 @@ export default function AudioPlayer({ src }: Props) {
     const handleDownload = () => {
         const a = document.createElement('a')
         a.href = src
-        a.download = 'translation.mp3'
+        a.download = normalizeDownloadName(downloadName)
         document.body.appendChild(a)
         a.click()
         document.body.removeChild(a)

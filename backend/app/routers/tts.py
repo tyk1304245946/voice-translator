@@ -8,7 +8,7 @@ from app.schemas import (
     GenerateItem,
 )
 from app.services.elevenlabs_service import generate_audio
-from app.services.translation import translate_text
+from app.services.translation import translate_text, generate_download_name
 from app.database import get_db, HistoryRecord
 
 router = APIRouter()
@@ -36,11 +36,13 @@ async def generate(request: GenerateRequest, db: Session = Depends(get_db)):
         try:
             translated = await translate_text(text, request.mode)
             filename = await generate_audio(translated, request.voice_id)
+            download_name = await generate_download_name(text, translated)
 
             record = HistoryRecord(
                 original_text=text,
                 translated_text=translated,
                 audio_filename=filename,
+                download_name=download_name,
                 mode=request.mode,
             )
             db.add(record)
@@ -53,6 +55,7 @@ async def generate(request: GenerateRequest, db: Session = Depends(get_db)):
                     original=text,
                     translated=translated,
                     audio_url=f"/audio/{filename}",
+                    download_name=download_name,
                 )
             )
         except Exception as e:

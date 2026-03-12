@@ -1,20 +1,5 @@
-from openai import AsyncOpenAI
-from app.config import settings
-
-_client: AsyncOpenAI | None = None
-
-ARK_BASE_URL = "https://ark.cn-beijing.volces.com/api/coding/v3"
-ARK_MODEL = "ark-code-latest"
-
-
-def get_client() -> AsyncOpenAI:
-    global _client
-    if _client is None:
-        _client = AsyncOpenAI(
-            api_key=settings.ark_api_key,
-            base_url=ARK_BASE_URL,
-        )
-    return _client
+import re
+from app.services.llm_service import create_chat_completion
 
 
 NORMAL_SYSTEM_PROMPT = (
@@ -35,14 +20,17 @@ SHORT_VIDEO_SYSTEM_PROMPT = (
     "Output only the translated text, nothing else."
 )
 
+DOWNLOAD_NAME_SYSTEM_PROMPT = (
+    "你是中文命名助手。请根据文案内容生成一个用于下载音频的中文文件名（不含扩展名）。"
+    "要求：6-18个中文字符，简洁自然，体现主题，不要标点，不要空格，不要引号。"
+)
+
 
 async def translate_text(text: str, mode: str = "normal") -> str:
-    client = get_client()
     system_prompt = (
         SHORT_VIDEO_SYSTEM_PROMPT if mode == "short_video" else NORMAL_SYSTEM_PROMPT
     )
-    response = await client.chat.completions.create(
-        model=ARK_MODEL,
+    response = await create_chat_completion(
         messages=[
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": text},
@@ -50,3 +38,31 @@ async def translate_text(text: str, mode: str = "normal") -> str:
         temperature=0.3,
     )
     return response.choices[0].message.content.strip()
+
+
+def _sanitize_file_stem(stem: str) -> str:
+    safe = stem.strip()
+    # 兼容常见系统文件名限制，保留中文/英文/数字/下划线/连字符。
+    safe = re.sub(r"[\\/:*?\"<>|]", "", safe)
+    safe = re.sub(r"\s+", "", safe)
+    safe = re.sub(r"[^\u4e00-\u9fffA-Za-z0-9_-]", "", safe)
+    return safe[:36] if safe else "中文语音"
+
+
+async def generate_download_name(original_text: str, translated_text: str) -> str:
+    prompt = (
+        "请基于以下内容生成中文下载文件名（不带扩展名）：\n"
+        f"原文：{original_text}\n"
+        f"译文：{translated_text}\n"
+        "仅输出文件名本体。"
+    )
+
+    response = await create_chat_completion(
+        messages=[
+            {"role": "system", "content": DOWNLOAD_NAME_SYSTEM_PROMPT},
+            {"role": "user", "content": prompt},
+        ],
+        temperature=0.2,
+    )
+    generated = response.choices[0].message.content or "中文语音"
+    return f"{_sanitize_file_stem(generated)}.mp3"

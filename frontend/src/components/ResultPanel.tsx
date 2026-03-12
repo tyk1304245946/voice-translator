@@ -45,8 +45,15 @@ function ResultCard({ item, index }: { item: GenerateItem; index: number }) {
                 </p>
             </div>
 
+            <div className="text-xs text-slate-400 bg-slate-800/60 rounded-md px-3 py-2">
+                下载名称：
+                <span className="text-slate-200 ml-1 break-all">
+                    {item.download_name}
+                </span>
+            </div>
+
             {/* 音频播放器 */}
-            <AudioPlayer src={item.audio_url} />
+            <AudioPlayer src={item.audio_url} downloadName={item.download_name} />
         </div>
     )
 }

@@ -3,6 +3,7 @@ export interface GenerateItem {
     original: string
     translated: string
     audio_url: string
+    download_name: string
 }
 
 export interface HistoryItem {
@@ -10,6 +11,7 @@ export interface HistoryItem {
     original_text: string
     translated_text: string
     audio_filename: string | null
+    download_name: string | null
     mode: string
     created_at: string
 }

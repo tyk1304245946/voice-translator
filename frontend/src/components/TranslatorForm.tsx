@@ -15,7 +15,7 @@ const EXAMPLE_TEXTS = [
 
 export default function TranslatorForm({ onResults, onSuccess }: Props) {
     const [texts, setTexts] = useState<string[]>([''])
-    const [mode, setMode] = useState<'normal' | 'short_video'>('normal')
+    const [mode, setMode] = useState<'normal' | 'short_video'>('short_video')
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState<string | null>(null)
 
@@ -28,6 +28,11 @@ export default function TranslatorForm({ onResults, onSuccess }: Props) {
         setTexts((prev) => prev.map((t, idx) => (idx === i ? val : t)))
 
     const loadExamples = () => setTexts(EXAMPLE_TEXTS)
+
+    const clearTexts = () => {
+        setTexts([''])
+        setError(null)
+    }
 
     const handleSubmit = async () => {
         const filtered = texts.filter((t) => t.trim())
@@ -123,6 +128,14 @@ export default function TranslatorForm({ onResults, onSuccess }: Props) {
                 >
                     <Plus size={15} />
                     添加文案（批量）
+                </button>
+                <button
+                    onClick={clearTexts}
+                    disabled={loading || !hasContent}
+                    className="flex items-center gap-1.5 text-slate-400 hover:text-red-300 border border-slate-600 hover:border-red-500 rounded-lg px-3 py-2 text-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                    <Trash2 size={15} />
+                    一键清空输入
                 </button>
                 {!hasContent && (
                     <button

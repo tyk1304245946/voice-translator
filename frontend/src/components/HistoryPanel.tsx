@@ -111,8 +111,8 @@ export default function HistoryPanel() {
                                     <div className="flex items-center gap-2 mb-2 flex-wrap">
                                         <span
                                             className={`px-2 py-0.5 rounded text-xs font-medium ${item.mode === 'short_video'
-                                                    ? 'bg-purple-900/60 text-purple-300'
-                                                    : 'bg-slate-600 text-slate-300'
+                                                ? 'bg-purple-900/60 text-purple-300'
+                                                : 'bg-slate-600 text-slate-300'
                                                 }`}
                                         >
                                             {item.mode === 'short_video' ? '🎬 短视频' : '普通'}
@@ -127,6 +127,14 @@ export default function HistoryPanel() {
                                     <p className="text-white text-sm leading-relaxed">
                                         {item.translated_text}
                                     </p>
+                                    {item.download_name && (
+                                        <p className="text-slate-400 text-xs mt-2 break-all">
+                                            下载名称：
+                                            <span className="text-slate-200 ml-1">
+                                                {item.download_name}
+                                            </span>
+                                        </p>
+                                    )}
                                 </div>
                                 <button
                                     onClick={() => handleDelete(item.id)}
@@ -139,7 +147,10 @@ export default function HistoryPanel() {
 
                             {/* 音频播放 */}
                             {item.audio_filename && (
-                                <AudioPlayer src={`/audio/${item.audio_filename}`} />
+                                <AudioPlayer
+                                    src={`/audio/${item.audio_filename}`}
+                                    downloadName={item.download_name}
+                                />
                             )}
                         </div>
                     ))}
