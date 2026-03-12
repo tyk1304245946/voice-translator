@@ -1,0 +1,32 @@
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "8000:8000"
+    volumes:
+      # 持久化生成的音频文件
+      - audio_data:/app/audio
+      # 持久化 SQLite 数据库
+      - db_data:/app/dbdata
+    environment:
+      DATABASE_URL: "sqlite:///./dbdata/translator.db"
+    env_file:
+      - .env
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+volumes:
+  audio_data:
+  db_data:
