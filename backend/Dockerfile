@@ -3,8 +3,8 @@ FROM python:3.11-slim
 WORKDIR /app
 
 # 从官方镜像复制 uv 二进制
-COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv
-COPY --from=ghcr.io/astral-sh/uv:latest /uvx /usr/local/bin/uvx
+COPY --from=ghcr.nju.edu.cn/astral-sh/uv:latest /uv /usr/local/bin/uv
+COPY --from=ghcr.nju.edu.cn/astral-sh/uv:latest /uvx /usr/local/bin/uvx
 
 # 安装依赖（显式传入 pyproject.toml，可选 uv.lock 用于可复现构建）
 COPY pyproject.toml uv.lock* ./
