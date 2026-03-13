@@ -95,7 +95,7 @@ FEISHU_POLL_ENABLED=false
 FEISHU_POLL_INTERVAL_SECONDS=60
 FEISHU_BATCH_SIZE=20
 
-FEISHU_TRANSLATE_MODE=normal
+FEISHU_TRANSLATE_MODE=short_video
 # FEISHU_VOICE_ID=
 
 # 降级模式：音频失败时，仍写回英文脚本
@@ -113,7 +113,7 @@ FEISHU_FALLBACK_TEXT_ONLY_ON_AUDIO_FAIL=true
 ```json
 {
 	"limit": 20,
-	"mode": "normal",
+	"mode": "short_video",
 	"voice_id": null,
 	"audio_only": false
 }

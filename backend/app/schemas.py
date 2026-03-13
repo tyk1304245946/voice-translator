@@ -53,7 +53,7 @@ class HistoryItemSchema(BaseModel):
 
 class FeishuSyncRequest(BaseModel):
     limit: int = Field(default=20, ge=1, le=200)
-    mode: str = "normal"
+    mode: str = "short_video"
     voice_id: Optional[str] = None
     audio_only: bool = False
 

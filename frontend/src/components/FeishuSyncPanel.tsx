@@ -13,7 +13,7 @@ interface Props {
 
 export default function FeishuSyncPanel({ onSuccess }: Props) {
     const [limit, setLimit] = useState(20)
-    const [mode, setMode] = useState<'normal' | 'short_video'>('normal')
+    const [mode, setMode] = useState<'normal' | 'short_video'>('short_video')
     const [audioOnly, setAudioOnly] = useState(false)
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState<string | null>(null)
