@@ -188,7 +188,7 @@ def _sanitize_multiline_text(value: str) -> str:
     return cleaned.strip()
 
 
-async def _resolve_field_ids() -> dict[str, str]:
+async def _validate_configured_fields() -> None:
     fields = await _client.list_fields()
     by_name = {f.get("field_name"): f for f in fields}
 
@@ -211,12 +211,6 @@ async def _resolve_field_ids() -> dict[str, str]:
         raise FeishuClientError(
             f"Field '{settings.feishu_audio_field}' must be Attachment, got {audio_ui_type}"
         )
-
-    return {
-        "cn_id": str(cn.get("field_id")),
-        "en_id": str(en.get("field_id")),
-        "audio_id": str(audio.get("field_id")),
-    }
 
 
 def _extract_text(cell_value: Any) -> str:
@@ -276,7 +270,7 @@ async def sync_bitable_once(
             "errors": errors,
         }
 
-    field_ids = await _resolve_field_ids()
+    await _validate_configured_fields()
 
     page_token: str | None = None
     while True:
@@ -331,10 +325,10 @@ async def sync_bitable_once(
 
                 file_token = await _client.upload_audio(local_audio_path, audio_name)
                 update_fields: dict[str, Any] = {
-                    field_ids["audio_id"]: [{"file_token": file_token}],
+                    settings.feishu_audio_field: [{"file_token": file_token}],
                 }
                 if not en_text:
-                    update_fields[field_ids["en_id"]] = translated
+                    update_fields[settings.feishu_english_field] = translated
                 await _client.update_record(
                     record_id,
                     update_fields,
@@ -351,7 +345,7 @@ async def sync_bitable_once(
                         await _client.update_record(
                             record_id,
                             {
-                                field_ids["en_id"]: translated,
+                                settings.feishu_english_field: translated,
                             },
                         )
                         processed += 1
