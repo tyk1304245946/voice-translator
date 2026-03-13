@@ -93,7 +93,7 @@ FEISHU_AUDIO_FIELD=音频
 
 FEISHU_POLL_ENABLED=false
 FEISHU_POLL_INTERVAL_SECONDS=60
-FEISHU_BATCH_SIZE=20
+FEISHU_BATCH_SIZE=3
 
 FEISHU_TRANSLATE_MODE=short_video
 # FEISHU_VOICE_ID=
@@ -112,7 +112,7 @@ FEISHU_FALLBACK_TEXT_ONLY_ON_AUDIO_FAIL=true
 
 ```json
 {
-	"limit": 20,
+	"limit": 3,
 	"mode": "short_video",
 	"voice_id": null,
 	"audio_only": false

@@ -26,7 +26,7 @@ class Settings(BaseSettings):
     feishu_audio_field: str = "音频"
     feishu_poll_enabled: bool = False
     feishu_poll_interval_seconds: int = 60
-    feishu_batch_size: int = 20
+    feishu_batch_size: int = 3
     feishu_translate_mode: str = "short_video"
     feishu_voice_id: str = ""
     feishu_fallback_text_only_on_audio_fail: bool = True
