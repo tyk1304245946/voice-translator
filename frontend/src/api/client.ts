@@ -1,4 +1,11 @@
-import type { GenerateItem, HistoryItem } from '../types'
+import type {
+    FeishuPollingConfig,
+    FeishuPollingConfigUpdateRequest,
+    FeishuSyncRequest,
+    FeishuSyncResponse,
+    GenerateItem,
+    HistoryItem,
+} from '../types'
 
 export interface GenerateRequest {
     texts: string[]
@@ -41,4 +48,26 @@ export async function deleteHistoryItem(id: number): Promise<void> {
 
 export async function clearHistory(): Promise<void> {
     await request('/api/history', { method: 'DELETE' })
+}
+
+export async function syncFeishu(req: FeishuSyncRequest): Promise<FeishuSyncResponse> {
+    return request<FeishuSyncResponse>('/api/feishu/sync', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(req),
+    })
+}
+
+export async function getFeishuPollingConfig(): Promise<FeishuPollingConfig> {
+    return request<FeishuPollingConfig>('/api/feishu/polling-config')
+}
+
+export async function updateFeishuPollingConfig(
+    req: FeishuPollingConfigUpdateRequest
+): Promise<FeishuPollingConfig> {
+    return request<FeishuPollingConfig>('/api/feishu/polling-config', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(req),
+    })
 }

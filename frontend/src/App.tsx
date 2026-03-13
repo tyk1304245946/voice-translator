@@ -3,6 +3,7 @@ import type { GenerateItem } from './types'
 import TranslatorForm from './components/TranslatorForm'
 import ResultPanel from './components/ResultPanel'
 import HistoryPanel from './components/HistoryPanel'
+import FeishuSyncPanel from './components/FeishuSyncPanel'
 
 type Tab = 'translate' | 'history'
 
@@ -46,8 +47,8 @@ export default function App() {
                             key={id}
                             onClick={() => setActiveTab(id)}
                             className={`px-5 py-2 rounded-lg text-sm font-medium transition-all ${activeTab === id
-                                    ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-900/30'
-                                    : 'text-slate-400 hover:text-white'
+                                ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-900/30'
+                                : 'text-slate-400 hover:text-white'
                                 }`}
                         >
                             {label}
@@ -59,8 +60,11 @@ export default function App() {
             {/* Content */}
             <main className="max-w-7xl mx-auto px-6 py-6">
                 {activeTab === 'translate' ? (
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                        <TranslatorForm onResults={handleResults} onSuccess={handleSuccess} />
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+                        <div className="flex flex-col gap-6">
+                            <TranslatorForm onResults={handleResults} onSuccess={handleSuccess} />
+                            <FeishuSyncPanel onSuccess={handleSuccess} />
+                        </div>
                         <ResultPanel results={results} />
                     </div>
                 ) : (

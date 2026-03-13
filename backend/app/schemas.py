@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from typing import Optional, List
 from datetime import datetime
 
@@ -49,3 +49,31 @@ class HistoryItemSchema(BaseModel):
     created_at: datetime
 
     model_config = {"from_attributes": True}
+
+
+class FeishuSyncRequest(BaseModel):
+    limit: int = Field(default=20, ge=1, le=200)
+    mode: str = "normal"
+    voice_id: Optional[str] = None
+    audio_only: bool = False
+
+
+class FeishuSyncResponse(BaseModel):
+    scanned: int
+    processed: int
+    downgraded: int
+    skipped: int
+    failed: int
+    errors: List[str] = Field(default_factory=list)
+
+
+class FeishuPollingConfigResponse(BaseModel):
+    enabled: bool
+    interval_seconds: int
+    batch_size: int
+
+
+class FeishuPollingConfigUpdateRequest(BaseModel):
+    enabled: Optional[bool] = None
+    interval_seconds: Optional[int] = Field(default=None, ge=5, le=3600)
+    batch_size: Optional[int] = Field(default=None, ge=1, le=200)

@@ -15,3 +15,31 @@ export interface HistoryItem {
     mode: string
     created_at: string
 }
+
+export interface FeishuSyncRequest {
+    limit: number
+    mode: 'normal' | 'short_video'
+    voice_id?: string
+    audio_only?: boolean
+}
+
+export interface FeishuSyncResponse {
+    scanned: number
+    processed: number
+    downgraded: number
+    skipped: number
+    failed: number
+    errors: string[]
+}
+
+export interface FeishuPollingConfig {
+    enabled: boolean
+    interval_seconds: number
+    batch_size: number
+}
+
+export interface FeishuPollingConfigUpdateRequest {
+    enabled?: boolean
+    interval_seconds?: number
+    batch_size?: number
+}
